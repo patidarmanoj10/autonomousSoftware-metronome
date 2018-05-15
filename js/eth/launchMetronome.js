@@ -54,48 +54,47 @@ personal.unlockAccount(newOwner, newOwnerPassword)
 console.log('\nAccepting ownership of contracts')
 
 // Accept ownership of all contracts before launching
-hash = METToken.acceptOwnership({from: newOwner})
+hash = METToken.acceptOwnership({from: newOwner, gasPrice: GASPRICE})
 waitForTx(hash)
 
-hash = AutonomousConverter.acceptOwnership({from: newOwner})
-waitForTx(hash)
-
-personal.unlockAccount(newOwner, newOwnerPassword)
-hash = Auctions.acceptOwnership({from: newOwner})
-waitForTx(hash)
-
-hash = Proceeds.acceptOwnership({from: newOwner})
+hash = AutonomousConverter.acceptOwnership({from: newOwner, gasPrice: GASPRICE})
 waitForTx(hash)
 
 personal.unlockAccount(newOwner, newOwnerPassword)
-hash = SmartToken.acceptOwnership({from: newOwner})
+hash = Auctions.acceptOwnership({from: newOwner, gasPrice: GASPRICE})
 waitForTx(hash)
 
-hash = Validator.acceptOwnership({from: newOwner})
+hash = Proceeds.acceptOwnership({from: newOwner, gasPrice: GASPRICE})
 waitForTx(hash)
 
 personal.unlockAccount(newOwner, newOwnerPassword)
-hash = TokenPorter.acceptOwnership({from: newOwner})
+hash = SmartToken.acceptOwnership({from: newOwner, gasPrice: GASPRICE})
 waitForTx(hash)
 
-hash = ChainLedger.acceptOwnership({from: newOwner})
+hash = Validator.acceptOwnership({from: newOwner, gasPrice: GASPRICE})
+waitForTx(hash)
+
+personal.unlockAccount(newOwner, newOwnerPassword)
+hash = TokenPorter.acceptOwnership({from: newOwner, gasPrice: GASPRICE})
+waitForTx(hash)
+
+hash = ChainLedger.acceptOwnership({from: newOwner, gasPrice: GASPRICE})
 waitForTx(hash)
 
 console.log('\nLaunching AutonomousConverter Contract')
 personal.unlockAccount(newOwner, newOwnerPassword)
-hash = AutonomousConverter.init(METToken.address, SmartToken.address, Auctions.address, {from: newOwner, value: web3.toWei(0.1, 'ether')})
+hash = AutonomousConverter.init(METToken.address, SmartToken.address, Auctions.address, {from: newOwner, value: web3.toWei(0.1, 'ether'), gasPrice: GASPRICE})
 waitForTx(hash)
-
 console.log('\nLaunching Proceeds')
 personal.unlockAccount(newOwner, newOwnerPassword)
-hash = Proceeds.initProceeds(AutonomousConverter.address, Auctions.address, {from: newOwner})
+hash = Proceeds.initProceeds(AutonomousConverter.address, Auctions.address, {from: newOwner, gasPrice: GASPRICE})
 waitForTx(hash)
 
 console.log('\nLaunching Auctions')
 personal.unlockAccount(newOwner, newOwnerPassword)
 console.log('Auction start time=', START)
 console.log('Is auctions initialized already? ', Auctions.initialized())
-hash = Auctions.initAuctions(START, MINPRICE, PRICE, TIMESCALE, {from: newOwner, gas: 2000000})
+hash = Auctions.initAuctions(START, MINPRICE, PRICE, TIMESCALE, {from: newOwner, gas: 2000000, gasPrice: GASPRICE})
 waitForTx(hash)
 console.log('Initialized auctions', Auctions.initialized())
 if (!Auctions.initialized()) {

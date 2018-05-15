@@ -48,6 +48,7 @@ usage()
   [-O | --owner <owner eth address> ] [--auction auction_epoch_seconds] [-t | --timescale Time Mult]
   [-i | --interactive] [--seed ] [--chain eth|etc ] | [-h]
   [-v | --validators <list of three validators address>]
+  [-g | --gasprice <gas price in wei>]
 
 _EOM_
 
@@ -102,6 +103,7 @@ ETC_TEST_BOOTNODE="enode://5c604378ba83b38a4d8a47e45305d4c5b3a6841172fe2b55e062b
 ETH_TEST_PARITYSPEC="parity-spec.json"
 ETC_TEST_PARITYSPEC="parity-spec-etc.json"
 VALIDATORS="[]"
+GASPRICE=50000000000
 
 # Price in ETH per MET at start
 PRICE=2
@@ -153,6 +155,9 @@ while [ "$1" != "" ]; do
     -t | --timescale )  shift
       TIMESCALE=$1
       ;;
+    -g | --gasprice )  shift
+      GASPRICE=$1
+      ;;  
     -i | --interactive )
       INTERACTIVE=1
       ;;
@@ -363,6 +368,7 @@ var ETHER_ADDR = '$LOCAL_ETH'
 var OWNER_ADDRESS = '$OWNER_ADDRESS'
 var OWNER_PASS = '$OWNER_PASS'
 var VALIDATORS = $VALIDATORS
+var GASPRICE = $GASPRICE
 $foundersArray
 EOF
 PRELOAD="--preload js/$CHAIN/metronome.js,js/$CHAIN/const.js,js/common.js,js/$CHAIN/initMetronome.js"

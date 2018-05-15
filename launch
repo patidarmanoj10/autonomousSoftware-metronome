@@ -41,6 +41,7 @@ usage()
   If --live is offered, it will connect to the default parity instance.
 
   usage: launch [-O | --owner <owner eth address> ] [-P | --pass <password> ] [--live | --test]
+  [-g | --gasprice <gas price in wei>]
 
 _EOM_
 
@@ -84,10 +85,10 @@ ETC_TEST_BOOTNODE="enode://5c604378ba83b38a4d8a47e45305d4c5b3a6841172fe2b55e062b
 ETH_TEST_PARITYSPEC="parity-spec.json"
 ETC_TEST_PARITYSPEC="parity-spec-etc.json"
 OWNER_ADDRESS=0x0
+GASPRICE=50000000000
 
 while [ "$1" != "" ]; do
   case $1 in
-    --live )          PARITY="parity --geth $RPCAPI  >log/parity.eth.log 2>log/parity.eth.err.log"
       DEST="Eth Live Net"
       LIVE=1
       LOCAL=0
@@ -112,6 +113,9 @@ while [ "$1" != "" ]; do
     -c | --chain )    shift
       CHAIN=$1
       ;;
+    -g | --gasprice )  shift
+      GASPRICE=$1
+      ;; 
     --seed )
       SEED=,js/$CHAIN/testStart.js
       ;;
@@ -249,6 +253,7 @@ var TIMESCALE = 1
 var MINPRICE = 3300000000000
 var OWNER_ADDRESS = '$OWNER_ADDRESS'
 var OWNER_PASS = '$PASS'
+var GASPRICE = $GASPRICE
 EOF
 
 currentTime=$(expr `date +%s` + 10)
